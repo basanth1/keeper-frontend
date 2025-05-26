@@ -15,7 +15,7 @@ function App() {
       .then(data => {
         if (data) {
           setUser(data);
-          fetch("/notes", { credentials: "include" })
+          fetch(`${import.meta.env.VITE_API_URL}/notes`, { credentials: "include" })
             .then(res => res.json())
             .then(setNotes);
         }
