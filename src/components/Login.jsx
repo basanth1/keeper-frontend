@@ -11,10 +11,10 @@ function Login() {
         <a
           className="login-btn"
           href={`${import.meta.env.VITE_API_URL}/auth/google`}
-          rel="noopener noreferrer"
         >
           Sign in with Google
         </a>
+
 
       </div>
     </div>
