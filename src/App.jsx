@@ -10,17 +10,44 @@ function App() {
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/me`, { credentials: "include" })
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (data) {
-          setUser(data);
-          fetch(`${import.meta.env.VITE_API_URL}/notes`, { credentials: "include" })
-            .then(res => res.json())
-            .then(setNotes);
-        }
+  const fetchUserAndNotes = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/me`, {
+        credentials: "include",
       });
-  }, []);
+
+      console.log("GET /me status:", res.status);
+
+      if (res.ok) {
+        const userData = await res.json();
+        console.log("User data:", userData);
+        setUser(userData);
+
+        const notesRes = await fetch(`${import.meta.env.VITE_API_URL}/notes`, {
+          credentials: "include",
+        });
+
+        console.log("GET /notes status:", notesRes.status);
+
+        if (notesRes.ok) {
+          const notesData = await notesRes.json();
+          setNotes(notesData);
+        } else {
+          console.warn("Failed to fetch notes");
+        }
+
+      } else {
+        console.warn("User not authenticated");
+      }
+
+    } catch (err) {
+      console.error("Error during fetch:", err);
+    }
+  };
+
+  fetchUserAndNotes();
+}, []);
+
 
   function addNote(note) {
     fetch(`${import.meta.env.VITE_API_URL}/add`, {
