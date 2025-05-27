@@ -11,7 +11,6 @@ function Login() {
         <a
           className="login-btn"
           href={`${import.meta.env.VITE_API_URL}/auth/google`}
-          target="_blank"
           rel="noopener noreferrer"
         >
           Sign in with Google
